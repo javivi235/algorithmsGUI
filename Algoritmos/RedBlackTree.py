@@ -1,8 +1,5 @@
-
 import sys
 
-
-# Node creation
 class Node():
     def __init__(self, item):
         self.item = item
@@ -10,7 +7,6 @@ class Node():
         self.left = None
         self.right = None
         self.color = 1
-
 
 class RedBlackTree():
     def __init__(self):
@@ -21,28 +17,24 @@ class RedBlackTree():
         self.root = self.TNULL
         self.pasos = []
 
-    # Preorder
     def pre_order_helper(self, node):
         if node != TNULL:
             sys.stdout.write(node.item + " ")
             self.pre_order_helper(node.left)
             self.pre_order_helper(node.right)
 
-    # Inorder
     def in_order_helper(self, node):
         if node != TNULL:
             self.in_order_helper(node.left)
             sys.stdout.write(node.item + " ")
             self.in_order_helper(node.right)
 
-    # Postorder
     def post_order_helper(self, node):
         if node != TNULL:
             self.post_order_helper(node.left)
             self.post_order_helper(node.right)
             sys.stdout.write(node.item + " ")
 
-    # Search the tree
     def search_tree_helper(self, node, key):
         if node == TNULL or key == node.item:
             return node
@@ -51,7 +43,9 @@ class RedBlackTree():
             return self.search_tree_helper(node.left, key)
         return self.search_tree_helper(node.right, key)
 
-    # Balancing the tree after deletion
+    def get_color(self,color):
+        return "negro" if color == 0 else "rojo"
+
     def delete_fix(self, x):
         while x != self.root and x.color == 0:
             if x == x.parent.left:
@@ -62,20 +56,37 @@ class RedBlackTree():
                     self.left_rotate(x.parent)
                     s = x.parent.right
 
+                    self.pasos.append("Recolorear " + str(s.item) + " a " + self.get_color(s.color))
+                    self.pasos.append("Recolorear " + str(x.parent.item) + " a " + self.get_color(x.parent.color))
+                    self.pasos.append("Rotar " + str(x.parent.item) + " a la izquierda")
                 if s.left.color == 0 and s.right.color == 0:
                     s.color = 1
                     x = x.parent
+
+                    self.pasos.append("Recolorear " + str(s.item) + " a " + self.get_color(s.color))
                 else:
                     if s.right.color == 0:
                         s.left.color = 0
                         s.color = 1
                         self.right_rotate(s)
+
+                        self.pasos.append("Recolorear " + str(s.left.item) + " a " + self.get_color(s.left.color))
+                        self.pasos.append("Recolorear " + str(s.item) + " a " + self.get_color(s.color))
+                        self.pasos.append("Rotar " + str(s.item) + " a la derecha")    
+
                         s = x.parent.right
+                    
 
                     s.color = x.parent.color
                     x.parent.color = 0
                     s.right.color = 0
                     self.left_rotate(x.parent)
+
+                    self.pasos.append("Recolorear " + str(s.item) + " a " + self.get_color(s.color))
+                    self.pasos.append("Recolorear " + str(s.right.item) + " a " + self.get_color(s.right.color))
+                    self.pasos.append("Recolorear " + str(x.parent.item) + " a " + self.get_color(x.parent.color))
+                    self.pasos.append("Rotar " + str(x.parent.item) + " a la izquierda")  
+
                     x = self.root
             else:
                 s = x.parent.left
@@ -85,21 +96,37 @@ class RedBlackTree():
                     self.right_rotate(x.parent)
                     s = x.parent.left
 
+                    self.pasos.append("Recolorear " + str(s.item) + " a " + self.get_color(s.color))
+                    self.pasos.append("Recolorear " + str(x.parent.color) + " a " + self.get_color(x.parent.color))
+                    self.pasos.append("Rotar " + str(x.parent.item) + " a la derecha")  
+                             
                 if s.right.color == 0 and s.right.color == 0:
                     s.color = 1
                     x = x.parent
+                    self.pasos.append("Recolorear " + str(s.item) + " a " + self.get_color(s.color))
                 else:
                     if s.left.color == 0:
                         s.right.color = 0
                         s.color = 1
                         self.left_rotate(s)
                         s = x.parent.left
+            
+                        self.pasos.append("Recolorear " + str(s.right.item) + " a " + self.get_color(s.right.color))
+                        self.pasos.append("Recolorear " + str(s.item) + " a " + self.get_color(s.color))
+                        self.pasos.append("Rotar " + str(s.item) + " a la derecha")       
 
                     s.color = x.parent.color
                     x.parent.color = 0
                     s.left.color = 0
                     self.right_rotate(x.parent)
+
+                    self.pasos.append("Recolorear " + str(s.item) + " a " + self.get_color(s.color))
+                    self.pasos.append("Recolorear " + str(s.left.item) + " a " + self.get_color(0))
+                    self.pasos.append("Recolorear " + str(x.parent.item) + " a " + self.get_color(0))
+                    self.pasos.append("Rotar " + str(x.parent.item) + " a la derecha") 
+
                     x = self.root
+              
         x.color = 0
 
     def __rb_transplant(self, u, v):
@@ -111,9 +138,9 @@ class RedBlackTree():
             u.parent.right = v
         v.parent = u.parent
 
-    # Node deletion
     def delete_node_helper(self, node, key):
-        print("Borrar " + str(key))
+        self.pasos = []
+        self.pasos.append("Borrar " + str(key))
         z = self.TNULL
         while node != self.TNULL:
             if node.item == key:
@@ -125,16 +152,19 @@ class RedBlackTree():
                 node = node.left
 
         if z == self.TNULL:
-            print("Cannot find key in the tree")
-            return
+            raise Exception("Cannot find key in the tree")
 
         y = z
         y_original_color = y.color
         if z.left == self.TNULL:
             x = z.right
+            if z.right.item != 0:
+                self.pasos.append("Reemplazar "+ str(z.item) + " con " + str(z.right.item))
             self.__rb_transplant(z, z.right)
         elif (z.right == self.TNULL):
             x = z.left
+            if z.left.item != 0:
+                self.pasos.append("Reemplazar "+ str(z.item) + " con " + str(z.left.item))
             self.__rb_transplant(z, z.left)
         else:
             y = self.minimum(z.right)
@@ -143,27 +173,27 @@ class RedBlackTree():
             if y.parent == z:
                 x.parent = y
             else:
+                if y.right.item != 0 :
+                    self.pasos.append("Reemplazar "+ str(y.item) + " con " + str(y.right.item))
                 self.__rb_transplant(y, y.right)
                 y.right = z.right
                 y.right.parent = y
 
+            if y.item != 0:
+                self.pasos.append("Reemplazar "+ str(z.item) + " con " + str(y.item))
             self.__rb_transplant(z, y)
             y.left = z.left
             y.left.parent = y
+            self.pasos.append("Recolorear " + str(y.item) + " a " + self.get_color(z.color))
             y.color = z.color
         if y_original_color == 0:
             self.delete_fix(x)
 
-    # Balance the tree after insertion
     def fix_insert(self, k):
         while k.parent.color == 1:
             if k.parent == k.parent.parent.right:
                 u = k.parent.parent.left
                 if u.color == 1:
-                    #si el tio es rojo recoloreamos
-                    #recoloreamos el abuelo
-                    #relocoreamos el tio
-                    #recoloreamos el padre
                     self.pasos.append("Recolorear " + str(k.parent.item) +", " +str(u.item) +", "+ str(k.parent.parent.item))
                     u.color = 0
                     k.parent.color = 0
@@ -183,10 +213,6 @@ class RedBlackTree():
                 u = k.parent.parent.right
 
                 if u.color == 1:
-                    #si el tio es rojo recoloreamos
-                    #recoloreamos el abuelo
-                    #relocoreamos el tio
-                    #recoloreamos el padre
                     self.pasos.append("Recolorear " + str(k.parent.item) +", " + str(u.item) +", "+ str(k.parent.parent.item))
                     u.color = 0
                     k.parent.color = 0
@@ -206,7 +232,6 @@ class RedBlackTree():
                 break
         self.root.color = 0
 
-    # Printing the tree
     def __print_helper(self, node, indent, last):
         if node != self.TNULL:
             sys.stdout.write(indent)
@@ -344,17 +369,26 @@ class RedBlackTree():
         self.__print_helper(self.root, "", True)
 
 
-if __name__ == "__main__":
-    bst = RedBlackTree()
+# if __name__ == "__main__":
+#     bst = RedBlackTree()
 
-    bst.insert(1)
-    bst.insert(2)
-    bst.insert(3)
-    bst.insert(4)
-    bst.insert(5)
+#     bst.insert(1)
+#     bst.insert(2)
+#     bst.insert(3)
+#     bst.insert(4)
+#     bst.insert(5)
+#     bst.insert(6)
+#     bst.insert(7)
+#     bst.insert(8)
+#     bst.insert(9)
+#     bst.insert(10)
 
-    bst.print_tree()
-    print(bst.pasos)
-    # print("\nAfter deleting an element")
-    # bst.delete_node(40)
-    # bst.print_tree()
+
+#     bst.print_tree()
+#     # print(bst.pasos)
+#     print("\nAfter deleting an element")
+#     bst.delete_node(6)
+#     bst.print_tree()
+#     print(bst.pasos)
+#     bst.delete_node(7)
+    # print(bst.pasos)
