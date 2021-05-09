@@ -1,8 +1,15 @@
 from tkinter import * 
 from tkinter import ttk 
 from tkinter import messagebox
-import random 
-from bubbleSort import bubbleSort
+import random
+import os
+import sys
+
+sys.path.append('..')
+
+from Algoritmos.arbolAVL import ArbolAVL
+
+from BubbleSort.BubbleSort.bubbleSort import bubbleSort
 
 valores_globales = {
     "fuente_titulo" : ("Inter",15),
@@ -24,6 +31,8 @@ tk.geometry("1200x700")
 # tk.maxsize(valores_globales["window_width"], valores_globales["window_height"])
 tk.config(bg = 'white')
 
+arbolAVL = None
+
 def insertar_elemento():
     if validarInput():
         if algoritmos_box.get() == "Bubble Sort":
@@ -33,13 +42,41 @@ def insertar_elemento():
         elif algoritmos_box.get() == "Tabla Hash":
             print("Tabla Hash " + input_valor.get())
         elif algoritmos_box.get() == "Árbol AVL":
+            global arbolAVL
             print("Árbol AVL " + input_valor.get())
+            if arbolAVL is None:
+                arbolAVL = ArbolAVL(None, None, input_valor.get(), None, list_box_results)
+                list_box_results.insert(list_box_results.index("end") + 1, f'Agregamos la raiz {input_valor.get()} ')
+
+            else:
+                arbolAVL.insertar(input_valor.get())
+
         elif algoritmos_box.get() == "Árbol Rojo y Negro":
             print("Árbol Rojo y Negro " + input_valor.get())
     else:
         messagebox.showerror("Error", "Ingrese un valor numerico")
 
 def borrar_elemento():
+    if validarInput():
+        if algoritmos_box.get() == "Bubble Sort":
+            print("Bubble Sort " + input_valor.get())
+        elif algoritmos_box.get() == "Merge Sort":
+            print("Merge Sort " + input_valor.get())
+        elif algoritmos_box.get() == "Tabla Hash":
+            print("Tabla Hash " + input_valor.get())
+        elif algoritmos_box.get() == "Árbol AVL":
+            global arbolAVL
+            print("Árbol AVL " + input_valor.get())
+            if arbolAVL is None:
+                list_box_results.insert(list_box_results.index("end"), f'No se puede borrar { input_valor.get()}')
+            else:
+                arbolAVL.delete(input_valor.get())
+                print(arbolAVL)
+
+        elif algoritmos_box.get() == "Árbol Rojo y Negro":
+            print("Árbol Rojo y Negro " + input_valor.get())
+    else:
+        messagebox.showerror("Error", "Ingrese un valor numerico")
     return
 def limpiar_canvas():
     return
@@ -84,7 +121,7 @@ def validarInput():
     entrada = "X"
     try:
         entrada =  int(input_valor.get())
-        print("Añadiendo: " + str(entrada))        
+        #print("Añadiendo: " + str(entrada))
     except:
         return False
     return True        
