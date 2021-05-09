@@ -27,7 +27,7 @@ valores_globales = {
 
 tk = Tk()
 tk.title('Proyecto Final')
-tk.geometry("1200x700")
+tk.geometry("1200x1005")
 # tk.maxsize(valores_globales["window_width"], valores_globales["window_height"])
 tk.config(bg = 'white')
 
@@ -85,8 +85,11 @@ def guardar_m():
 def escribir_resultado():
     return
 
+#general_frame = Frame(tk, bg="yellow")
+#general_frame.grid(sticky="NS")
+
 tool_bar_frame = Frame(tk, width = valores_globales["window_width"], height = int(valores_globales["window_height"]/7)*2, bg = valores_globales["color_bg_general"] )
-tool_bar_frame.grid(row = 0, column = 0, padx=10, pady=5, sticky=W)
+tool_bar_frame.grid(row = 0, column = 0, sticky=W)
 
 label_algoritmo = Label(tool_bar_frame, text='Algoritmo ', font = valores_globales["fuente_titulo"], borderwidth=1, bg = valores_globales["color_bg_general"] , fg = valores_globales["color_letra_general"])
 label_algoritmo.grid(row=0,column=0,sticky = W,padx = 5, pady = 5)
@@ -139,20 +142,33 @@ def modified (event) :
 algoritmos_box.bind('<<ComboboxSelected>>', modified)
 
 #Seccion del canvas y del listbox
-second_row_frame= Frame(tk, width = int(valores_globales["window_width"]), height = int(valores_globales["window_height"]/2)*7, bg = "green" )
-second_row_frame.grid(row = 1, column = 0)
+second_row_frame= Frame(tk, width = int(valores_globales["window_width"]), bg = "green")
+second_row_frame.grid(row = 1, column = 0, sticky="EWNS")
 
-results_frame = Frame(second_row_frame, width = int(valores_globales["window_width"]/2), height = int(valores_globales["window_height"]/2)*7, bg = "black" )
-results_frame.grid(row = 0, column = 0)
+second_row_frame.columnconfigure(0, weight=3)
+second_row_frame.columnconfigure(1, weight=1)
 
-sentencias_frame = Frame(second_row_frame, width = int(valores_globales["window_width"]/2), height = int(valores_globales["window_height"]/2)*7, bg = "red" )
-sentencias_frame.grid(row = 0, column = 1)
+# width = int(valores_globales["window_width"]/2), height = int(valores_globales["window_height"]/2)*7,
 
-canvas = Canvas(results_frame,width = int(valores_globales["window_width"]/4)*3, height = 100 , bg = valores_globales["color_bg_canvas"])
-# # canvas.create_oval(105,105,105,105, fill = "yellow")
-canvas.grid(row=0,column=0)
+#results_frame = Frame(second_row_frame, bg = "black" )
+#results_frame.grid(row = 0, column = 0, sticky="NE")
 
-list_box_results = Listbox(sentencias_frame, width = 100, height = 100,font = valores_globales["fuente_fields"], bg = valores_globales["color_bg_botones"] , fg = valores_globales["color_letra_botones"])
-list_box_results.grid(row=0,column=0)
+#width = int(valores_globales["window_width"]/2), height = int(valores_globales["window_height"]/2)*7,
+#sentencias_frame = Frame(second_row_frame, bg = "red")
+#sentencias_frame.grid(row = 0, column = 1)
+
+#width = int(valores_globales["window_width"]/4)*3, height =  int(valores_globales["window_width"]/7)*5 ,
+canvas = Canvas(second_row_frame, width = int(valores_globales["window_width"]/4)*3, height =  int(valores_globales["window_width"]/5)*4, bg = valores_globales["color_bg_canvas"])
+#canvas.create_oval(0,0,105,105, fill = "black")
+canvas.grid(column=0,row=0, sticky="EW")
+
+scrollbar_sentences_y = Scrollbar(tk, width=15)
+scrollbar_sentences_y.grid(column=1,row=1, sticky="ENS")
+
+#width = 100, height = 100,
+list_box_results = Listbox(second_row_frame, width=30, font = valores_globales["fuente_fields"], bg = valores_globales["color_bg_botones"] , fg = valores_globales["color_letra_botones"], yscrollcommand=scrollbar_sentences_y.set)
+list_box_results.grid(column=1, row=0, sticky="WENS")
+
+scrollbar_sentences_y.config(command=list_box_results.yview)
 
 tk.mainloop()
