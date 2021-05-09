@@ -10,27 +10,14 @@ sys.path.append('..')
 from Algoritmos.arbolAVL import ArbolAVL
 from Algoritmos.ArbolRN import ArbolRN
 from Algoritmos.TablaHash import TablaHash
+from BubbleSort.BubbleSort.bubbleSort import bubbleSort
+from config import default
 from utils.canvasUtils import *
 
-from BubbleSort.BubbleSort.bubbleSort import bubbleSort
-
-valores_globales = {
-    "fuente_titulo" : ("Inter",15),
-    "fuente_fields": ("Inter",12),
-    "color_bg_general": "white",
-    "color_letra_general": "black",
-    "color_letra_botones": "white",
-    "color_bg_botones": "#455054",
-    "color_input": "gray",
-    "color_bg_canvas": "#F5F5DC",
-    "window_width" : 1200,
-    "window_height" : 700,
-}
-
+config = default
 tk = Tk()
 tk.title('Proyecto Final')
 tk.geometry("1200x1005")
-# tk.maxsize(valores_globales["window_width"], valores_globales["window_height"])
 tk.config(bg = 'white')
 
 arbolAVL = None
@@ -50,7 +37,7 @@ def insertar_elemento():
             if tablaHash is None:
                 messagebox.showinfo(message="Primero debe inicializar la tabla hash fijando un valor de m", title="Advertencia")
             else:
-                tablaHash.insertar(entrada)
+                tablaHash.insertar(canvas,entrada)
                 print(tablaHash.pasos)
      
         elif algoritmos_box.get() == "Árbol AVL":
@@ -82,12 +69,19 @@ def insertar_elemento():
 
 def borrar_elemento():
     if validarInput(input_valor.get()):
+        entrada = int(input_valor.get())
         if algoritmos_box.get() == "Bubble Sort":
             print("Borrar Bubble Sort " + input_valor.get())
         elif algoritmos_box.get() == "Merge Sort":
             print("Borrar Merge Sort " + input_valor.get())
         elif algoritmos_box.get() == "Tabla Hash":
+            global tablaHash
             print("Borrar Tabla Hash " + input_valor.get())
+            if tablaHash is None:
+                messagebox.showinfo(message="Primero debe inicializar la tabla hash fijando un valor de m", title="Advertencia")
+            else:
+                tablaHash.borrar(canvas,entrada)
+                print(tablaHash.pasos)
         elif algoritmos_box.get() == "Árbol AVL":
             global arbolAVL
             canvas.delete("all")
@@ -126,45 +120,54 @@ def guardar_m():
         entrada = int(input_m.get())
         if tablaHash is None:
             tablaHash = TablaHash(entrada)
-            tablaHash.crear_tabla()
+            tablaHash.crear_tabla(canvas)
         else:
             tablaHash.m = entrada
-            tablaHash.crear_tabla()
+            tablaHash.crear_tabla(canvas)
+    
     else:
         messagebox.showerror("Error", "Por favor ingrese un valor numérico")
 
+def limpiar():
+    global arbolAVL,arbolRN,tablaHash
+    arbolAVL = None
+    arbolRN  = None
+    tablaHash = None
+    #TODO resetar algoritmos ordenamiento
+    #TODO resetear canvas y sentencias
 
-tool_bar_frame = Frame(tk, width = valores_globales["window_width"], height = int(valores_globales["window_height"]/7)*2, bg = valores_globales["color_bg_general"] )
+
+
+tool_bar_frame = Frame(tk, width = config["window_width"], height = int(config["window_height"]/7)*2, bg = config["color_bg_general"] )
 tool_bar_frame.grid(row = 0, column = 0, sticky=W)
 
-label_algoritmo = Label(tool_bar_frame, text='Algoritmo ', font = valores_globales["fuente_titulo"], borderwidth=1, bg = valores_globales["color_bg_general"] , fg = valores_globales["color_letra_general"])
+label_algoritmo = Label(tool_bar_frame, text='Algoritmo ', font = config["fuente_titulo"], borderwidth=1, bg = config["color_bg_general"] , fg = config["color_letra_general"])
 label_algoritmo.grid(row=0,column=0,sticky = W,padx = 5, pady = 5)
 
 
-label_valor = Label(tool_bar_frame, text='Valor', font = valores_globales["fuente_titulo"], borderwidth=1, bg = valores_globales["color_bg_general"] , fg = valores_globales["color_letra_general"])
+label_valor = Label(tool_bar_frame, text='Valor', font = config["fuente_titulo"], borderwidth=1, bg = config["color_bg_general"] , fg = config["color_letra_general"])
 label_valor.grid(row=0,column=2,padx = 5, pady = 5, sticky = W)
 
 input_valor = Entry(tool_bar_frame)
 input_valor.grid(row=0,column=3, padx = 5, pady = 5, sticky = W)
 
-boton_insertar = Button(tool_bar_frame, text = 'Insertar', font= valores_globales["fuente_fields"], command = insertar_elemento, bg = valores_globales["color_bg_botones"], fg=valores_globales["color_letra_botones"])
+boton_insertar = Button(tool_bar_frame, text = 'Insertar', font= config["fuente_fields"], command = insertar_elemento, bg = config["color_bg_botones"], fg=config["color_letra_botones"])
 boton_insertar.grid(row = 0, column = 4, padx = 5, pady = 5, sticky = W)
 
-boton_borrar = Button(tool_bar_frame, text = 'Borrar', font= valores_globales["fuente_fields"] ,command = borrar_elemento, bg = valores_globales["color_bg_botones"], fg=valores_globales["color_letra_botones"])
+boton_borrar = Button(tool_bar_frame, text = 'Borrar', font= config["fuente_fields"] ,command = borrar_elemento, bg = config["color_bg_botones"], fg=config["color_letra_botones"])
 boton_borrar.grid(row = 0, column = 5,  padx = 5, pady = 5, sticky = W)
 
-boton_limpiar = Button(tool_bar_frame, text = 'Limpiar', font= valores_globales["fuente_fields"] ,command = limpiar_canvas, bg = valores_globales["color_bg_botones"], fg=valores_globales["color_letra_botones"])
+boton_limpiar = Button(tool_bar_frame, text = 'Limpiar', font= config["fuente_fields"] ,command = limpiar, bg = config["color_bg_botones"], fg=config["color_letra_botones"])
 boton_limpiar.grid(row = 0, column = 6,  padx = 5, pady = 5, sticky = W)
 
-label_m = Label(tool_bar_frame, text='Valor de M', font = valores_globales["fuente_titulo"], borderwidth=1, bg = valores_globales["color_bg_general"] , fg = valores_globales["color_letra_general"])
+label_m = Label(tool_bar_frame, text='Valor de M', font = config["fuente_titulo"], borderwidth=1, bg = config["color_bg_general"] , fg = config["color_letra_general"])
 input_m = Entry(tool_bar_frame)
-boton_m = Button(tool_bar_frame, text = 'Fijar M', command = guardar_m, font=valores_globales["fuente_fields"], bg = valores_globales["color_bg_botones"], fg = valores_globales["color_letra_botones"])
+boton_m = Button(tool_bar_frame, text = 'Fijar M', command = guardar_m, font=config["fuente_fields"], bg = config["color_bg_botones"], fg = config["color_letra_botones"])
 
 algoritmo_actual = StringVar()
-algoritmos_box = ttk.Combobox(tool_bar_frame, textvariable = algoritmo_actual,font = valores_globales["fuente_fields"],values=['Bubble Sort', 'Merge Sort', 'Tabla Hash', 'Árbol AVL', 'Árbol Rojo y Negro'])
+algoritmos_box = ttk.Combobox(tool_bar_frame, textvariable = algoritmo_actual,font = config["fuente_fields"],values=['Bubble Sort', 'Merge Sort', 'Tabla Hash', 'Árbol AVL', 'Árbol Rojo y Negro'])
 algoritmos_box.grid(row=0, column=1,padx = 5, pady = 5)
 algoritmos_box.current(0)
-
 
 def validarInput(valor):
     entrada = "X"
@@ -187,14 +190,13 @@ def modified (event) :
 
 algoritmos_box.bind('<<ComboboxSelected>>', modified)
 
-#Seccion del canvas y del listbox
-second_row_frame= Frame(tk, width = int(valores_globales["window_width"]), bg = "green")
+second_row_frame= Frame(tk, width = int(config["window_width"]), bg = "green")
 second_row_frame.grid(row = 1, column = 0, sticky="EWNS")
 
 second_row_frame.columnconfigure(0, weight=3)
 second_row_frame.columnconfigure(1, weight=1)
 
-# width = int(valores_globales["window_width"]/2), height = int(valores_globales["window_height"]/2)*7,
+# width = int(config["window_width"]/2), height = int(config["window_height"]/2)*7,
 
 results_frame = Frame(second_row_frame, bg = "white")
 results_frame.grid(row = 0, column = 0, sticky="EW")
@@ -205,12 +207,12 @@ canvas_x_scroll.grid(row = 1, column = 0, sticky="EW")
 canvas_y_scroll = Scrollbar(results_frame)
 canvas_y_scroll.grid(row = 0, column = 1, sticky="NS")
 
-#width = int(valores_globales["window_width"]/2), height = int(valores_globales["window_height"]/2)*7,
+#width = int(config["window_width"]/2), height = int(config["window_height"]/2)*7,
 #sentencias_frame = Frame(second_row_frame, bg = "red")
 #sentencias_frame.grid(row = 0, column = 1, sticky="WENS")
 
-#width = int(valores_globales["window_width"]/4)*3, height =  int(valores_globales["window_width"]/7)*5 ,
-canvas = Canvas(results_frame, width = int(valores_globales["window_width"]/4)*3, height =  int(valores_globales["window_width"]/5)*4-15, bg = valores_globales["color_bg_canvas"], scrollregion=(0,0,10000,10000))
+#width = int(config["window_width"]/4)*3, height =  int(config["window_width"]/7)*5 ,
+canvas = Canvas(results_frame, width = int(config["window_width"]/4)*3, height =  int(config["window_width"]/5)*4-15, bg = config["color_bg_canvas"], scrollregion=(0,0,10000,10000))
 #canvas.create_oval(0,0,105,105, fill = "black")
 canvas.grid(column=0,row=0, sticky="EW")
 
@@ -218,7 +220,7 @@ scrollbar_sentences_y = Scrollbar(tk, width=15)
 scrollbar_sentences_y.grid(column=1,row=1, sticky="ENS")
 
 #width = 100, height = 100,
-list_box_results = Listbox(second_row_frame, width=30, font = valores_globales["fuente_fields"], bg = valores_globales["color_bg_botones"] , fg = valores_globales["color_letra_botones"], yscrollcommand=scrollbar_sentences_y.set)
+list_box_results = Listbox(second_row_frame, width=30, font = config["fuente_fields"], bg = config["color_bg_botones"] , fg = config["color_letra_botones"], yscrollcommand=scrollbar_sentences_y.set)
 list_box_results.grid(column=1, row=0, sticky="WENS")
 
 canvas_x_scroll.config(command=canvas.xview)
