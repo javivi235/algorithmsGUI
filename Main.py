@@ -10,6 +10,7 @@ sys.path.append('..')
 from Algoritmos.arbolAVL import ArbolAVL
 from Algoritmos.ArbolRN import ArbolRN
 from Algoritmos.TablaHash import TablaHash
+from utils.canvasUtils import *
 
 from BubbleSort.BubbleSort.bubbleSort import bubbleSort
 
@@ -54,12 +55,15 @@ def insertar_elemento():
      
         elif algoritmos_box.get() == "Árbol AVL":
             global arbolAVL
+            canvas.delete("all")
             print("Insertar Árbol AVL " + input_valor.get())
             if arbolAVL is None:
-                arbolAVL = ArbolAVL(None, None, input_valor.get(), None, list_box_results)
+                arbolAVL = ArbolAVL(None, None, int(input_valor.get()), None, list_box_results)
                 list_box_results.insert(list_box_results.index("end") + 1, f'Agregamos la raiz {input_valor.get()} ')
             else:
                 arbolAVL.insertar(input_valor.get())
+
+            drawAVLTree(arbolAVL, canvas)
                 
         elif algoritmos_box.get() == "Árbol Rojo y Negro":
             global arbolRN
@@ -86,12 +90,13 @@ def borrar_elemento():
             print("Borrar Tabla Hash " + input_valor.get())
         elif algoritmos_box.get() == "Árbol AVL":
             global arbolAVL
+            canvas.delete("all")
             print("Borrar Árbol AVL " + input_valor.get())
             if arbolAVL is None:
                 messagebox.showerror("Error", "No se puede borrar un elemento de un árbol vacío")
             else:
-                arbolAVL.delete(input_valor.get())
-                print(arbolAVL)
+                arbolAVL.delete(int(input_valor.get()))
+            drawAVLTree(arbolAVL, canvas)
 
         elif algoritmos_box.get() == "Árbol Rojo y Negro":
             global arbolRN
@@ -106,6 +111,14 @@ def borrar_elemento():
         messagebox.showerror("Error", "Por favor ingrese un valor numérico")
     return
 def limpiar_canvas():
+    canvas.delete("all")
+    list_box_results.delete(0,END)
+    if validarInput(input_valor.get()):
+        if algoritmos_box.get() == "Árbol AVL":
+            global arbolAVL
+            arbolAVL = None
+
+
     return
 def guardar_m():
     global tablaHash

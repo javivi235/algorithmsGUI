@@ -125,6 +125,7 @@ class ArbolAVL:
             print(f'nodo p {p.value} nodo q {q.value}')
 
         self.recalcularenhojas()
+        self.aumentaralturaRoot()
 
 
 
@@ -135,8 +136,8 @@ class ArbolAVL:
             self.insertararbol(destino, fuente.arbolDer)
 
     def insertar(self, value):
+        value = int(value)
         if value < self.value:
-            #print("val: " + str(value) + " self: " + str(self.padre))
             if self.arbolIzq is None:
                 self.output.insert(self.output.index("end") + 1, f'Agregamos el nodo {value} como hijo Izquierdo de { self.value }')
                 self.arbolIzq = ArbolAVL(None, None, value, self, self.output)
