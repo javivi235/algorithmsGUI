@@ -1,6 +1,7 @@
 import sys
+from tkinter import messagebox
 
-class Node():
+class NodoRN():
     def __init__(self, item):
         self.item = item
         self.parent = None
@@ -8,14 +9,14 @@ class Node():
         self.right = None
         self.color = 1
 
-class RedBlackTree():
-    def __init__(self):
-        self.TNULL = Node(0)
+class ArbolRN():
+    def __init__(self,pasos=[]):
+        self.TNULL = NodoRN(0)
         self.TNULL.color = 0
         self.TNULL.left = None
         self.TNULL.right = None
         self.root = self.TNULL
-        self.pasos = []
+        self.pasos = pasos
 
     def pre_order_helper(self, node):
         if node != TNULL:
@@ -140,9 +141,11 @@ class RedBlackTree():
 
     def delete_node_helper(self, node, key):
         self.pasos = []
-        self.pasos.append("Borrar " + str(key))
         z = self.TNULL
+        print(type(node.item),node.item)
+        print(type(key),key)
         while node != self.TNULL:
+
             if node.item == key:
                 z = node
 
@@ -152,8 +155,10 @@ class RedBlackTree():
                 node = node.left
 
         if z == self.TNULL:
-            raise Exception("Cannot find key in the tree")
+            messagebox.showinfo(message="El nodo " + key + " no se encuentra en el árbol", title="Advertencia")
+            return
 
+        self.pasos.append("Borrar " + str(key))
         y = z
         y_original_color = y.color
         if z.left == self.TNULL:
@@ -322,10 +327,10 @@ class RedBlackTree():
         y.right = x
         x.parent = y
 
-    def insert(self, key):
+    def insertar(self, key):
         self.pasos = []
         self.pasos.append("Insertar " + str(key))
-        node = Node(key)
+        node = NodoRN(key)
         node.parent = None
         node.item = key
         node.left = self.TNULL
@@ -362,7 +367,7 @@ class RedBlackTree():
     def get_root(self):
         return self.root
 
-    def delete_node(self, item):
+    def borrar(self, item):
         self.delete_node_helper(self.root, item)
 
     def print_tree(self):
@@ -370,25 +375,33 @@ class RedBlackTree():
 
 
 # if __name__ == "__main__":
-#     bst = RedBlackTree()
+#     bst = ArbolRN(pasos=[])
 
-#     bst.insert(1)
-#     bst.insert(2)
-#     bst.insert(3)
-#     bst.insert(4)
-#     bst.insert(5)
-#     bst.insert(6)
-#     bst.insert(7)
-#     bst.insert(8)
-#     bst.insert(9)
-#     bst.insert(10)
+#     bst.insertar(10)
+
+#     print(bst.root.item)
+#     bst.print_tree()
+
+#     bst.insertar(20)
+#     print(bst.root.item)
+
+#     bst.print_tree()
+
+# #     bst.insertar(2)
+#     bst.insertar(3)
+#     bst.insertar(4)
+#     bst.insertar(5)
+#     bst.insertar(6)
+#     bst.insertar(7)
+#     bst.insertar(8)
+#     bst.insertar(9)
+#     bst.insertar(10)
 
 
 #     bst.print_tree()
 #     # print(bst.pasos)
 #     print("\nAfter deleting an element")
-#     bst.delete_node(6)
+#     bst.borrar(6)
 #     bst.print_tree()
 #     print(bst.pasos)
-#     bst.delete_node(7)
-    # print(bst.pasos)
+#     print(bst.pasos)
