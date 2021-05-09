@@ -9,6 +9,7 @@ sys.path.append('..')
 
 from Algoritmos.arbolAVL import ArbolAVL
 from Algoritmos.ArbolRN import ArbolRN
+from Algoritmos.TablaHash import TablaHash
 
 from BubbleSort.BubbleSort.bubbleSort import bubbleSort
 
@@ -33,18 +34,27 @@ tk.config(bg = 'white')
 
 arbolAVL = None
 arbolRN  = None
+tablaHash = None
 
 def insertar_elemento():
-    if validarInput():
+    if validarInput(input_valor.get()):
+        entrada = int(input_valor.get())
         if algoritmos_box.get() == "Bubble Sort":
-            print("Bubble Sort " + input_valor.get())
+            print("Insertar Bubble Sort " + input_valor.get())
         elif algoritmos_box.get() == "Merge Sort":
-            print("Merge Sort " + input_valor.get())
+            print("Insertar Merge Sort " + input_valor.get())
         elif algoritmos_box.get() == "Tabla Hash":
-            print("Tabla Hash " + input_valor.get())
+            global tablaHash
+            print("Insertar Tabla Hash " + input_valor.get())
+            if tablaHash is None:
+                messagebox.showinfo(message="Primero debe inicializar la tabla hash fijando un valor de m", title="Advertencia")
+            else:
+                tablaHash.insertar(entrada)
+                print(tablaHash.pasos)
+     
         elif algoritmos_box.get() == "Árbol AVL":
             global arbolAVL
-            print("Árbol AVL " + input_valor.get())
+            print("Insertar Árbol AVL " + input_valor.get())
             if arbolAVL is None:
                 arbolAVL = ArbolAVL(None, None, input_valor.get(), None, list_box_results)
                 list_box_results.insert(list_box_results.index("end") + 1, f'Agregamos la raiz {input_valor.get()} ')
@@ -53,7 +63,7 @@ def insertar_elemento():
                 
         elif algoritmos_box.get() == "Árbol Rojo y Negro":
             global arbolRN
-            print("Árbol Rojo y Negro " + input_valor.get())
+            print("Insertar Árbol Rojo y Negro " + input_valor.get())
             if arbolRN is None:
                 arbolRN = ArbolRN()
                 list_box_results.insert(list_box_results.index("end") + 1, f'Agregamos la raiz {input_valor.get()} ')
@@ -64,10 +74,10 @@ def insertar_elemento():
                 for paso in arbolRN.pasos:
                     list_box_results.insert(list_box_results.index("end") + 1, f'{paso}')
     else:
-        messagebox.showerror("Error", "Ingrese un valor numerico")
+        messagebox.showerror("Error", "Por favor ingrese un valor numérico")
 
 def borrar_elemento():
-    if validarInput():
+    if validarInput(input_valor.get()):
         if algoritmos_box.get() == "Bubble Sort":
             print("Borrar Bubble Sort " + input_valor.get())
         elif algoritmos_box.get() == "Merge Sort":
@@ -93,14 +103,23 @@ def borrar_elemento():
                 for paso in arbolRN.pasos:
                     list_box_results.insert(list_box_results.index("end") + 1, f'{paso}')
     else:
-        messagebox.showerror("Error", "Ingrese un valor numerico")
+        messagebox.showerror("Error", "Por favor ingrese un valor numérico")
     return
 def limpiar_canvas():
     return
 def guardar_m():
-    return
-def escribir_resultado():
-    return
+    global tablaHash
+    if validarInput(input_m.get()): 
+        entrada = int(input_m.get())
+        if tablaHash is None:
+            tablaHash = TablaHash(entrada)
+            tablaHash.crear_tabla()
+        else:
+            tablaHash.m = entrada
+            tablaHash.crear_tabla()
+    else:
+        messagebox.showerror("Error", "Por favor ingrese un valor numérico")
+
 
 #general_frame = Frame(tk, bg="yellow")
 #general_frame.grid(sticky="NS")
@@ -137,11 +156,10 @@ algoritmos_box.grid(row=0, column=1,padx = 5, pady = 5)
 algoritmos_box.current(0)
 
 
-def validarInput():
+def validarInput(valor):
     entrada = "X"
     try:
-        entrada =  int(input_valor.get())
-        #print("Añadiendo: " + str(entrada))
+        entrada =  int(valor)
     except:
         return False
     return True        
