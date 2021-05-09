@@ -134,9 +134,6 @@ def guardar_m():
         messagebox.showerror("Error", "Por favor ingrese un valor numérico")
 
 
-#general_frame = Frame(tk, bg="yellow")
-#general_frame.grid(sticky="NS")
-
 tool_bar_frame = Frame(tk, width = valores_globales["window_width"], height = int(valores_globales["window_height"]/7)*2, bg = valores_globales["color_bg_general"] )
 tool_bar_frame.grid(row = 0, column = 0, sticky=W)
 
@@ -199,15 +196,21 @@ second_row_frame.columnconfigure(1, weight=1)
 
 # width = int(valores_globales["window_width"]/2), height = int(valores_globales["window_height"]/2)*7,
 
-#results_frame = Frame(second_row_frame, bg = "black" )
-#results_frame.grid(row = 0, column = 0, sticky="NE")
+results_frame = Frame(second_row_frame, bg = "white")
+results_frame.grid(row = 0, column = 0, sticky="EW")
+
+canvas_x_scroll = Scrollbar(results_frame, orient="horizontal")
+canvas_x_scroll.grid(row = 1, column = 0, sticky="EW")
+
+canvas_y_scroll = Scrollbar(results_frame)
+canvas_y_scroll.grid(row = 0, column = 1, sticky="NS")
 
 #width = int(valores_globales["window_width"]/2), height = int(valores_globales["window_height"]/2)*7,
 #sentencias_frame = Frame(second_row_frame, bg = "red")
-#sentencias_frame.grid(row = 0, column = 1)
+#sentencias_frame.grid(row = 0, column = 1, sticky="WENS")
 
 #width = int(valores_globales["window_width"]/4)*3, height =  int(valores_globales["window_width"]/7)*5 ,
-canvas = Canvas(second_row_frame, width = int(valores_globales["window_width"]/4)*3, height =  int(valores_globales["window_width"]/5)*4, bg = valores_globales["color_bg_canvas"])
+canvas = Canvas(results_frame, width = int(valores_globales["window_width"]/4)*3, height =  int(valores_globales["window_width"]/5)*4-15, bg = valores_globales["color_bg_canvas"], scrollregion=(0,0,10000,10000))
 #canvas.create_oval(0,0,105,105, fill = "black")
 canvas.grid(column=0,row=0, sticky="EW")
 
@@ -218,6 +221,9 @@ scrollbar_sentences_y.grid(column=1,row=1, sticky="ENS")
 list_box_results = Listbox(second_row_frame, width=30, font = valores_globales["fuente_fields"], bg = valores_globales["color_bg_botones"] , fg = valores_globales["color_letra_botones"], yscrollcommand=scrollbar_sentences_y.set)
 list_box_results.grid(column=1, row=0, sticky="WENS")
 
+canvas_x_scroll.config(command=canvas.xview)
+canvas_y_scroll.config(command=canvas.yview)
+canvas.config(xscrollcommand=canvas_x_scroll.set, yscrollcommand=canvas_y_scroll.set)
 scrollbar_sentences_y.config(command=list_box_results.yview)
 
 tk.mainloop()
