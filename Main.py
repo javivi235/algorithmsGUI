@@ -38,8 +38,9 @@ def insertar_elemento():
                 messagebox.showinfo(message="Primero debe inicializar la tabla hash fijando un valor de m", title="Advertencia")
             else:
                 tablaHash.insertar(canvas,entrada)
-                print(tablaHash.pasos)
-     
+                for paso in tablaHash.pasos:
+                    list_box_results.insert(list_box_results.index("end") + 1, f'{paso}')
+
         elif algoritmos_box.get() == "Árbol AVL":
             global arbolAVL
             canvas.delete("all")
@@ -81,7 +82,9 @@ def borrar_elemento():
                 messagebox.showinfo(message="Primero debe inicializar la tabla hash fijando un valor de m", title="Advertencia")
             else:
                 tablaHash.borrar(canvas,entrada)
-                print(tablaHash.pasos)
+                for paso in tablaHash.pasos:
+                    list_box_results.insert(list_box_results.index("end") + 1, f'{paso}')
+                    
         elif algoritmos_box.get() == "Árbol AVL":
             global arbolAVL
             canvas.delete("all")
@@ -104,6 +107,7 @@ def borrar_elemento():
     else:
         messagebox.showerror("Error", "Por favor ingrese un valor numérico")
     return
+
 def limpiar_canvas():
     canvas.delete("all")
     list_box_results.delete(0,END)
@@ -111,7 +115,6 @@ def limpiar_canvas():
         if algoritmos_box.get() == "Árbol AVL":
             global arbolAVL
             arbolAVL = None
-
 
     return
 def guardar_m():
@@ -124,7 +127,6 @@ def guardar_m():
         else:
             tablaHash.m = entrada
             tablaHash.crear_tabla(canvas)
-    
     else:
         messagebox.showerror("Error", "Por favor ingrese un valor numérico")
 
@@ -136,7 +138,6 @@ def limpiar():
     #TODO resetar algoritmos ordenamiento
     canvas.delete("all")
     list_box_results.delete(0, END)
-
 
 
 tool_bar_frame = Frame(tk, width = config["window_width"], height = int(config["window_height"]/7)*2, bg = config["color_bg_general"] )
