@@ -2,10 +2,6 @@ import time
 
 def mergeSort(data, dibujar, lista2):
     mergeSortAlg(data, 0, len(data)-1, dibujar, lista2)
-    
-    #lista2.delete("all")
-    #lista2.create_text(100,100, text="Array ordenado con Merge Sort")
-
 
 def mergeSortAlg(data, izq, der, dibujar, lista2):
     
@@ -16,6 +12,7 @@ def mergeSortAlg(data, izq, der, dibujar, lista2):
         mergeSortAlg(data, medio+1, der, dibujar, lista2) 
         merge(data, izq, medio, der, dibujar, lista2)
 
+    
 
 def merge(data, izq, medio, der, dibujar, lista2):
     
@@ -30,6 +27,9 @@ def merge(data, izq, medio, der, dibujar, lista2):
     
     izqIdx = derIdx = 0 
 
+    txt = ("Valor del medio: " + str(data[medio]))
+    lista2.insert(4, str(txt))
+
     text1 = ("Izquierda: " + str(ladoIzq))
     lista2.insert(5, str(text1))
 
@@ -40,31 +40,30 @@ def merge(data, izq, medio, der, dibujar, lista2):
 
         if izqIdx < len(ladoIzq) and derIdx < len(ladoDer): 
             
+            txt3 = ("Realizando cambio") 
             if ladoIzq[izqIdx] <= ladoDer[derIdx]:
+
+                lista2.insert(7, str(txt3))
                 data[dataIdx] = ladoIzq[izqIdx] 
                 izqIdx += 1
                 
             else:
+                lista2.insert(7, str(txt3))
                 data[dataIdx] = ladoDer[derIdx]
                 derIdx += 1 
                 
         elif izqIdx < len(ladoIzq):
+
+            lista2.insert(7, str(txt3))
             data[dataIdx] = ladoIzq[izqIdx]
             izqIdx += 1 
 
         else: 
+            lista2.insert(7, str(txt3))
             data[dataIdx] = ladoDer[derIdx]
             derIdx += 1 
 
     dibujar(data, ["green" if x >= izq and x <= der else "white" for x in range(len(data))])
-    
-    
-    #print("Izquierda: " + str(ladoIzq))
-    
-
-    #print("Derecha: " + str(ladoDer)) 
-    
-    #print(data) 
 
     time.sleep(2)
 
