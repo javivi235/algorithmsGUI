@@ -10,8 +10,8 @@ sys.path.append('..')
 from Algoritmos.arbolAVL import ArbolAVL
 from Algoritmos.ArbolRN import ArbolRN
 from Algoritmos.TablaHash import TablaHash
-from BubbleSort.BubbleSort.bubbleSort import bubbleSort
-
+from Algoritmos.bubbleSort import bubbleSort
+from Algoritmos.mergeSort import mergeSort
 
 from config import default
 from utils.canvasUtils import *
@@ -26,13 +26,59 @@ arbolAVL = None
 arbolRN  = None
 tablaHash = None
 
+data = []
+
+def dibujar(data, color):
+    canvas.delete("all") 
+    cHeight = 380
+    cWidth = 600 
+    
+    algoWidth = cWidth /  (len(data) + 1)
+    algoHeight = cWidth /  (len(data) + 1)
+    offset = 20
+    spacing = 10
+
+    tamData = [i / max(data) for i in data]
+
+    for i, height in enumerate(tamData):
+        
+        x0 = i * algoWidth + offset + spacing
+        y0 = cHeight - height * 50
+
+        
+        x1 = (i+1) * algoWidth + offset
+        y1 = cHeight 
+
+        canvas.create_oval(x0,y0,x1,y1, fill = color[i])
+        canvas.create_text(x0+2,y0, anchor = SW, text=str(data[i]))
+
+    
+    tk.update_idletasks()
+
+def ordenar_elementos():
+    print("Iniciando algoritmo")
+    global data 
+    
+    if algoritmos_box.get() == 'Bubble Sort':
+        bubbleSort(data, dibujar, list_box_results)
+
+    elif algoritmos_box.get() == 'Merge Sort':
+        mergeSort(data, dibujar, list_box_results)
+
+    dibujar(data, ['green' for x in range(len(data))])
+    
+
 def insertar_elemento():
     if validarInput(input_valor.get()):
         entrada = int(input_valor.get())
         if algoritmos_box.get() == "Bubble Sort":
-            print("Insertar Bubble Sort " + input_valor.get())
+            data.append(entrada)
+            dibujar(data, ['red' for x in range(len(data))])
+
         elif algoritmos_box.get() == "Merge Sort":
-            print("Insertar Merge Sort " + input_valor.get())
+            data.append(entrada)
+            dibujar(data, ['red' for x in range(len(data))])
+
         elif algoritmos_box.get() == "Tabla Hash":
             global tablaHash
             print("Insertar Tabla Hash " + input_valor.get())
@@ -139,6 +185,13 @@ def limpiar():
     canvas.delete("all")
     list_box_results.delete(0, END)
 
+    if algoritmos_box.get() == 'Bubble Sort':
+        global data
+        data = []
+
+    elif algoritmos_box.get() == 'Merge Sort':
+        data = []
+        
 
 tool_bar_frame = Frame(tk, width = config["window_width"], height = int(config["window_height"]/7)*2, bg = config["color_bg_general"] )
 tool_bar_frame.grid(row = 0, column = 0, sticky=W)
@@ -166,6 +219,9 @@ label_m = Label(tool_bar_frame, text='Valor de M', font = config["fuente_titulo"
 input_m = Entry(tool_bar_frame)
 boton_m = Button(tool_bar_frame, text = 'Fijar M', command = guardar_m, font=config["fuente_fields"], bg = config["color_bg_botones"], fg = config["color_letra_botones"])
 
+boton_ordenar = Button(tool_bar_frame, text = 'Ordenar', command = ordenar_elementos, font=config["fuente_fields"], bg = config["color_bg_botones"], fg = config["color_letra_botones"])
+boton_ordenar.grid(row = 0, column = 10, padx = 5, pady = 5, sticky = W)    
+
 algoritmo_actual = StringVar()
 algoritmos_box = ttk.Combobox(tool_bar_frame, textvariable = algoritmo_actual,font = config["fuente_fields"],values=['Bubble Sort', 'Merge Sort', 'Tabla Hash', 'Árbol AVL', 'Árbol Rojo y Negro'])
 algoritmos_box.grid(row=0, column=1,padx = 5, pady = 5)
@@ -180,15 +236,25 @@ def validarInput(valor):
     return True        
 
 def modified (event) :
+    data = [] 
     limpiar()
     if(algoritmos_box.get() == "Tabla Hash"):
         label_m.grid(row = 0,column = 7,padx = 5, pady = 5, sticky = W)
         input_m.grid(row = 0,column = 8, padx = 5, pady = 5, sticky = W)
         boton_m.grid(row = 0, column = 9, sticky = W)
+        boton_ordenar.grid_forget()
+
+    elif(algoritmos_box.get() == 'Bubble Sort' or algoritmos_box.get() == 'Merge Sort'):
+        boton_ordenar.grid(row = 0, column = 10, padx = 5, pady = 5, sticky = W)    
+        label_m.grid_forget()
+        input_m.grid_forget()
+        boton_m.grid_forget()
+
     else:
         label_m.grid_forget()
         input_m.grid_forget()
         boton_m.grid_forget()
+        boton_ordenar.grid_forget()
 
 algoritmos_box.bind('<<ComboboxSelected>>', modified)
 
