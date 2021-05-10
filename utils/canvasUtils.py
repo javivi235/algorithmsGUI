@@ -28,7 +28,7 @@ def dibujar_arbol(arbol,tipo, canvas):
 
     x = int(int(canvas["width"])/2)
     while x/(2**altura) < r:
-        x *= 2
+        x += 2*r
 
     dibujar_arbol_recursivo(arbol, tipo, x, r + 10, canvas, int(x/2), altura, r+10,arbolRN)
 
@@ -36,12 +36,14 @@ def dibujar_arbol_recursivo(arbol, tipo, x, y, canvas, d, altura, dy,arbolRN):
     valor = None
     arbolIzq = None
     arbolDer = None
-    alturaSubArbol = None 
+    alturaSubArbol = None
+    color = "black"
     if tipo == "rojo-negro":
         valor = arbol.item
         arbolIzq = arbol.left
         arbolDer = arbol.right
         alturaSubArbol = arbolRN.get_altura(arbol)
+        color = "red" if arbol.color == 1 else "black"
     elif tipo == "avl":
         valor = arbol.value
         arbolIzq = arbol.arbolIzq
@@ -52,8 +54,8 @@ def dibujar_arbol_recursivo(arbol, tipo, x, y, canvas, d, altura, dy,arbolRN):
     y0 = y - r
     x1 = x + r
     y1 = y + r
-    canvas.create_oval(x0, y0, x1, y1)
-    canvas.create_text(int((x0 + x1)/2), int((y0+y1)/2), text=str(valor))
+    canvas.create_oval(x0, y0, x1, y1, outline=color)
+    canvas.create_text(int((x0 + x1)/2), int((y0+y1)/2), text=str(valor), fill=color)
 
     deltaX = (d/(2**altura)) * (2**alturaSubArbol)
 
