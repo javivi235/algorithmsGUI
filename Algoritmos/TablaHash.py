@@ -47,25 +47,3 @@ class TablaHash:
             return
         self.slots[hash_value].remove(k)
         canvasUtils.dibujar_keys_tabla_hash(canvas, self.m, self.slots)
-
-
-
-# tabla = TablaHash(17)
-# tabla.crear_tabla()
-# print(tabla.pasos)
-# tabla.insertar(10)
-# tabla.insertar(35)
-
-# tabla.insertar(1)
-# tabla.insertar(18)
-# tabla.insertar(52)
-# tabla.insertar(1)
-
-# tabla.insertar(127)
-
-
-# tabla.borrar(52)
-# tabla.borrar(52)
-
-# print(tabla.slots.values())
-# print(tabla.pasos)
