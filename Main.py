@@ -235,7 +235,7 @@ boton_m = Button(tool_bar_frame, text = 'Fijar M', command = guardar_m, font=con
 
 
 boton_ordenar = Button(tool_bar_frame, text = 'Ordenar', command = ordenar_elementos, font=config["fuente_fields"], bg = config["color_bg_botones"], fg = config["color_letra_botones"])
-boton_ordenar.grid(row = 0, column = 10, padx = 5, pady = 5, sticky = W)    
+#boton_ordenar.grid(row = 0, column = 10, padx = 5, pady = 5, sticky = W)    
 
 algoritmo_actual = StringVar()
 algoritmos_box = ttk.Combobox(tool_bar_frame, textvariable = algoritmo_actual,font = config["fuente_fields"],values=['Bubble Sort', 'Merge Sort', 'Tabla Hash', 'Árbol AVL', 'Árbol Rojo y Negro'])
@@ -258,13 +258,17 @@ def modified (event) :
         boton_m.grid(row = 0, column = 9, sticky = W)
         
 
-    #elif(algoritmos_box.get() == 'Bubble Sort'):
-    #    boton_ordenar.grid(row = 0, column = 10, padx = 5, pady = 5, sticky = W)    
-    
+    elif(algoritmos_box.get() == 'Bubble Sort' or algoritmos_box.get() == 'Merge Sort'):
+        boton_ordenar.grid(row = 0, column = 10, padx = 5, pady = 5, sticky = W)    
+        label_m.grid_forget()
+        input_m.grid_forget()
+        boton_m.grid_forget()
+
     else:
         label_m.grid_forget()
         input_m.grid_forget()
         boton_m.grid_forget()
+        boton_ordenar.grid_forget()
 
         
 
