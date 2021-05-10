@@ -30,10 +30,10 @@ data = []
 
 def dibujar(data, color):
     canvas.delete("all") 
-    cHeight = 380
+    cHeight = 600
     cWidth = 600 
     
-    algoWidth = cWidth /  (len(data) + 1)
+    algoWidth = cHeight /  (len(data) + 1)
     algoHeight = cWidth /  (len(data) + 1)
     offset = 20
     spacing = 10
@@ -42,14 +42,14 @@ def dibujar(data, color):
 
     for i, height in enumerate(tamData):
         
-        x0 = i * algoWidth + offset + spacing
-        y0 = cHeight - height * 50
+        x0 = (i) * algoWidth + offset + spacing
+        y0 = (cHeight // 2) - 25
 
         
         x1 = (i+1) * algoWidth + offset
-        y1 = cHeight 
+        y1 = (cHeight // 2) + 25
 
-        canvas.create_oval(x0,y0,x1,y1, fill = color[i])
+        canvas.create_rectangle(x0,y0,x1,y1, fill = color[i])
         canvas.create_text(x0+2,y0, anchor = SW, text=str(data[i]))
 
     
@@ -60,12 +60,12 @@ def ordenar_elementos():
     global data 
     
     if algoritmos_box.get() == 'Bubble Sort':
-        bubbleSort(data, dibujar, list_box_results)
+        bubbleSort(data, dibujar, list_box_results,tk, canvas)
 
     elif algoritmos_box.get() == 'Merge Sort':
-        mergeSort(data, dibujar, list_box_results)
+        mergeSort(data, dibujar, list_box_results, tk, canvas)
 
-    dibujar(data, ['green' for x in range(len(data))])
+    dibujar(data, [config['color_green'] for x in range(len(data))])
     
 
 def insertar_elemento():
@@ -73,11 +73,11 @@ def insertar_elemento():
         entrada = int(input_valor.get())
         if algoritmos_box.get() == "Bubble Sort":
             data.append(entrada)
-            dibujar(data, ['red' for x in range(len(data))])
+            dibujar(data, [config['color_red'] for x in range(len(data))])
 
         elif algoritmos_box.get() == "Merge Sort":
             data.append(entrada)
-            dibujar(data, ['red' for x in range(len(data))])
+            dibujar(data, [config['color_red'] for x in range(len(data))])
 
         elif algoritmos_box.get() == "Tabla Hash":
             global tablaHash
@@ -118,6 +118,8 @@ def insertar_elemento():
 
     else:
         messagebox.showerror("Error", "Por favor ingrese un valor numérico")
+
+    input_valor.delete(0, END)
 
 def borrar_elemento():
     if validarInput(input_valor.get()):

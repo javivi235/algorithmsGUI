@@ -1,8 +1,11 @@
 import time 
+from tkinter import * 
+from tkinter import ttk 
+from config import default 
 
-data = []
+config = default 
 
-def bubbleSort(data, dibujar, lista):
+def bubbleSort(data, dibujar, lista, tk, canvas):
     print("entro a bubble sort")
 
     lista.insert(lista.index('end'),"Inciando bubble sort....")
@@ -20,13 +23,15 @@ def bubbleSort(data, dibujar, lista):
 
                 dibujar(data, 
                     [
-                    'yellow' 
+                    config["color_yellow"] 
                     if x == j or x  == j+1 
-                    else 'white' for x in range(len(data))
+                    else config["color_white"] for x in range(len(data))
                     ]
                 )
-                time.sleep(0.5)
-    dibujar(data, ['green' for x in range(len(data))])
+                tk.after(500, None)
+                canvas.update()
+
+    dibujar(data, [config["color_green"] for x in range(len(data))])
     
     lista.insert(lista.index('end'), 'Ordenado')
     

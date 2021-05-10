@@ -8,5 +8,9 @@ default = {
     "color_input": "gray",
     "color_bg_canvas": "#F5F5DC",
     "window_width" : 1200,
-    "window_height" : 700
+    "window_height" : 700,
+    "color_green": "#C6E5B1",
+    "color_red": "#FF6961",
+    "color_yellow": "#FBC05F",
+    "color_white": "#E8DCCA"
 }
