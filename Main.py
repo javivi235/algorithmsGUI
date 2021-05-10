@@ -1,8 +1,6 @@
 from tkinter import * 
 from tkinter import ttk 
 from tkinter import messagebox
-import random
-import os
 import sys
 
 sys.path.append('..')
@@ -223,7 +221,7 @@ boton_ordenar = Button(tool_bar_frame, text = 'Ordenar', command = ordenar_eleme
 boton_ordenar.grid(row = 0, column = 10, padx = 5, pady = 5, sticky = W)    
 
 algoritmo_actual = StringVar()
-algoritmos_box = ttk.Combobox(tool_bar_frame, textvariable = algoritmo_actual,font = config["fuente_fields"],values=['Bubble Sort', 'Merge Sort', 'Tabla Hash', 'Árbol AVL', 'Árbol Rojo y Negro'])
+algoritmos_box = ttk.Combobox(tool_bar_frame, textvariable = algoritmo_actual,font = config["fuente_fields"],values=['Bubble Sort', 'Merge Sort', 'Tabla Hash', 'Árbol AVL', 'Árbol Rojo y Negro'], state="readonly")
 algoritmos_box.grid(row=0, column=1, padx = 5, pady = 5)
 algoritmos_box.current(0)
 
