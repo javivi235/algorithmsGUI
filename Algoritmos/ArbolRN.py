@@ -47,7 +47,7 @@ class ArbolRN():
     def get_color(self,color):
         return "negro" if color == 0 else "rojo"
 
-    def delete_fix(self, x):
+    def delete_rotar(self, x):
         while x != self.root and x.color == 0:
             if x == x.parent.left:
                 s = x.parent.right
@@ -191,9 +191,9 @@ class ArbolRN():
             self.pasos.append("Recolorear " + str(y.item) + " a " + self.get_color(z.color))
             y.color = z.color
         if y_original_color == 0:
-            self.delete_fix(x)
+            self.delete_rotar(x)
 
-    def fix_insert(self, k):
+    def insertar_rotar(self, k):
         while k.parent.color == 1:
             if k.parent == k.parent.parent.right:
                 u = k.parent.parent.left
@@ -235,21 +235,6 @@ class ArbolRN():
             if k == self.root:
                 break
         self.root.color = 0
-
-    def __print_helper(self, node, indent, last):
-        if node != self.TNULL:
-            sys.stdout.write(indent)
-            if last:
-                sys.stdout.write("R----")
-                indent += "     "
-            else:
-                sys.stdout.write("L----")
-                indent += "|    "
-
-            s_color = "RED" if node.color == 1 else "BLACK"
-            print(str(node.item) + "(" + s_color + ")")
-            self.__print_helper(node.left, indent, False)
-            self.__print_helper(node.right, indent, True)
 
     def preorder(self):
         self.pre_order_helper(self.root)
@@ -361,16 +346,13 @@ class ArbolRN():
         if node.parent.parent == None:
             return
 
-        self.fix_insert(node)
+        self.insertar_rotar(node)
 
     def get_root(self):
         return self.root
 
     def borrar(self, item):
         self.delete_node_helper(self.root, item)
-
-    def print_tree(self):
-        self.__print_helper(self.root, "", True)
 
     def get_altura_nodo(self,nodo):
         if nodo.left == self.TNULL:
@@ -391,17 +373,17 @@ class ArbolRN():
 
 
 
-# if __name__ == "__main__":
-#     bst = ArbolRN(pasos=[])
+if __name__ == "__main__":
+    bst = ArbolRN(pasos=[])
 
-#     bst.insertar(10)
-#     bst.insertar(20)
-#     bst.insertar(30)
-#     bst.insertar(40)
-#     bst.insertar(50)
-#     bst.insertar(60)
-#     bst.insertar(234)
-#     bst.insertar(235)
+    bst.insertar(10)
+    # bst.insertar(20)
+    # bst.insertar(30)
+    # bst.insertar(40)
+    # bst.insertar(50)
+    # bst.insertar(60)
+    # bst.insertar(234)
+    # bst.insertar(235)
 
 
 #     bst.print_tree()
@@ -409,7 +391,7 @@ class ArbolRN():
 
 #     bst.print_tree()
 
-    # bst.insertar(30)
+    bst.borrar(10)
     # bst.insertar(40)
 
 
