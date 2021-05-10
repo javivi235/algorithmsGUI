@@ -86,4 +86,27 @@ def dibujar_keys_tabla_hash(canvas,m,slots):
                 rect = HashTableSlot(canvas, x1, y1_key ,x2, y2_key , slots[slot][i])
 
 
+def dibujarSort(data, color):
+    canvas.delete("all") 
+    cHeight = 1200
+    cWidth = 700 
+    
+    algoWidth = cWidth /  (len(data) + 1)
+    algoHeight = cWidth /  (len(data) + 1)
+    offset = 20
+    spacing = 10
+
+    tamData = [i / max(data) for i in data]
+
+    for i, height in enumerate(tamData):
+        
+        x0 = i * algoWidth + offset + spacing
+        y0 = cHeight - height * 100
+
+        
+        x1 = (i+1) * algoWidth + offset
+        y1 = cHeight 
+
+        canvas.create_oval(x0,y0,x1,y1, fill = color[i])
+        canvas.create_text(x0+2,y0, anchor = SW, text=str(data[i]))
 
