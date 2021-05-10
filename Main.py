@@ -11,6 +11,8 @@ from Algoritmos.arbolAVL import ArbolAVL
 from Algoritmos.ArbolRN import ArbolRN
 from Algoritmos.TablaHash import TablaHash
 from BubbleSort.BubbleSort.bubbleSort import bubbleSort
+
+
 from config import default
 from utils.canvasUtils import *
 
@@ -51,21 +53,23 @@ def insertar_elemento():
             else:
                 arbolAVL.insertar(input_valor.get())
 
-            drawAVLTree(arbolAVL, canvas)
+            dibujar_arbol(arbolAVL, "avl", canvas)
                 
         elif algoritmos_box.get() == "Árbol Rojo y Negro":
             global arbolRN
+            canvas.delete("all")
             print("Insertar Árbol Rojo y Negro " + input_valor.get())
             if arbolRN is None:
                 arbolRN = ArbolRN()
                 arbolRN.insertar(int(input_valor.get()))
-                arbolRN.print_tree()
                 list_box_results.insert(list_box_results.index("end") + 1, f'Agregamos la raiz {input_valor.get()} ')
             else:
                 arbolRN.insertar(int(input_valor.get()))
-                arbolRN.print_tree()
                 for paso in arbolRN.pasos:
                     list_box_results.insert(list_box_results.index("end") + 1, f'{paso}')
+            
+            dibujar_arbol(arbolRN, "rojo-negro", canvas)
+
     else:
         messagebox.showerror("Error", "Por favor ingrese un valor numérico")
 
@@ -94,10 +98,12 @@ def borrar_elemento():
                 messagebox.showerror("Error", "No se puede borrar un elemento de un árbol vacío")
             else:
                 arbolAVL.delete(int(input_valor.get()))
-            drawAVLTree(arbolAVL, canvas)
+            dibujar_arbol(arbolAVL, "avl", canvas)
 
         elif algoritmos_box.get() == "Árbol Rojo y Negro":
             global arbolRN
+            canvas.delete("all")
+
             print("Borrar Árbol Rojo y Negro " + input_valor.get())
             if arbolRN is None:
                 messagebox.showerror("Error", "No se puede borrar un elemento de un árbol vacío")
@@ -105,18 +111,12 @@ def borrar_elemento():
                 arbolRN.borrar(int(input_valor.get()))
                 for paso in arbolRN.pasos:
                     list_box_results.insert(list_box_results.index("end") + 1, f'{paso}')
+            dibujar_arbol(arbolRN, "rojo-negro", canvas)
+
     else:
         messagebox.showerror("Error", "Por favor ingrese un valor numérico")
     return
 
-# def limpiar_canvas():
-#     canvas.delete("all")
-#     list_box_results.delete(0,END)
-#     if algoritmos_box.get() == "Árbol AVL":
-#         global arbolAVL
-#         arbolAVL = None
-    # return
-    
 def guardar_m():
     global tablaHash
     if validarInput(input_m.get()): 

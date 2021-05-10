@@ -142,8 +142,7 @@ class ArbolRN():
     def delete_node_helper(self, node, key):
         self.pasos = []
         z = self.TNULL
-        print(type(node.item),node.item)
-        print(type(key),key)
+
         while node != self.TNULL:
 
             if node.item == key:
@@ -373,19 +372,46 @@ class ArbolRN():
     def print_tree(self):
         self.__print_helper(self.root, "", True)
 
+    def get_altura_nodo(self,nodo):
+        if nodo.left == self.TNULL:
+            alturaIzq = 1
+        else:
+            alturaIzq = 1 + self.get_altura_nodo(nodo.left)
+
+        if nodo.right == self.TNULL:
+            alturaDer = 1
+        else:
+            alturaDer = 1 + self.get_altura_nodo(nodo.right)
+
+        return  max(alturaIzq , alturaDer)
+
+    def get_altura(self,nodo):
+        altura  = self.get_altura_nodo(nodo)
+        return  altura
+
+
 
 # if __name__ == "__main__":
 #     bst = ArbolRN(pasos=[])
 
 #     bst.insertar(10)
-
-#     print(bst.root.item)
-#     bst.print_tree()
-
 #     bst.insertar(20)
-#     print(bst.root.item)
+#     bst.insertar(30)
+#     bst.insertar(40)
+#     bst.insertar(50)
+#     bst.insertar(60)
+#     bst.insertar(234)
+#     bst.insertar(235)
+
 
 #     bst.print_tree()
+#     print(bst.get_altura(bst.root))
+
+#     bst.print_tree()
+
+    # bst.insertar(30)
+    # bst.insertar(40)
+
 
 # #     bst.insertar(2)
 #     bst.insertar(3)
@@ -401,7 +427,6 @@ class ArbolRN():
 #     bst.print_tree()
 #     # print(bst.pasos)
 #     print("\nAfter deleting an element")
-#     bst.borrar(6)
 #     bst.print_tree()
 #     print(bst.pasos)
 #     print(bst.pasos)
