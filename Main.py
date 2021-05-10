@@ -19,7 +19,8 @@ from utils.canvasUtils import *
 config = default
 tk = Tk()
 tk.title('Proyecto Final')
-tk.geometry("1300x1005")
+tk.geometry(f'{config["reference_width"] + 30}x{config["reference_height"]+230}')
+tk.wm_maxsize(config["reference_width"] + 30, config["reference_height"]+230)
 tk.config(bg = 'white')
 
 arbolAVL = None
@@ -181,7 +182,6 @@ def limpiar():
     arbolAVL = None
     arbolRN  = None
     tablaHash = None
-    #TODO resetar algoritmos ordenamiento
     canvas.delete("all")
     list_box_results.delete(0, END)
 
@@ -193,7 +193,7 @@ def limpiar():
         data = []
         
 
-tool_bar_frame = Frame(tk, width = config["window_width"], height = int(config["window_height"]/7)*2, bg = config["color_bg_general"] )
+tool_bar_frame = Frame(tk, width = config["reference_width"], height = int(config["reference_height"]/7)*2, bg = config["color_bg_general"] )
 tool_bar_frame.grid(row = 0, column = 0, sticky=W)
 
 label_algoritmo = Label(tool_bar_frame, text='Algoritmo ', font = config["fuente_titulo"], borderwidth=1, bg = config["color_bg_general"] , fg = config["color_letra_general"])
@@ -224,7 +224,7 @@ boton_ordenar.grid(row = 0, column = 10, padx = 5, pady = 5, sticky = W)
 
 algoritmo_actual = StringVar()
 algoritmos_box = ttk.Combobox(tool_bar_frame, textvariable = algoritmo_actual,font = config["fuente_fields"],values=['Bubble Sort', 'Merge Sort', 'Tabla Hash', 'Árbol AVL', 'Árbol Rojo y Negro'])
-algoritmos_box.grid(row=0, column=1,padx = 5, pady = 5)
+algoritmos_box.grid(row=0, column=1, padx = 5, pady = 5)
 algoritmos_box.current(0)
 
 def validarInput(valor):
@@ -258,13 +258,12 @@ def modified (event) :
 
 algoritmos_box.bind('<<ComboboxSelected>>', modified)
 
-second_row_frame= Frame(tk, width = int(config["window_width"]), bg = "green")
+second_row_frame= Frame(tk, width = int(config["reference_width"]) - 100, bg = "green")
 second_row_frame.grid(row = 1, column = 0, sticky="EWNS")
 
 second_row_frame.columnconfigure(0, weight=3)
 second_row_frame.columnconfigure(1, weight=1)
 
-# width = int(config["window_width"]/2), height = int(config["window_height"]/2)*7,
 
 results_frame = Frame(second_row_frame, bg = "white")
 results_frame.grid(row = 0, column = 0, sticky="EW")
@@ -275,19 +274,13 @@ canvas_x_scroll.grid(row = 1, column = 0, sticky="EW")
 canvas_y_scroll = Scrollbar(results_frame)
 canvas_y_scroll.grid(row = 0, column = 1, sticky="NS")
 
-#width = int(config["window_width"]/2), height = int(config["window_height"]/2)*7,
-#sentencias_frame = Frame(second_row_frame, bg = "red")
-#sentencias_frame.grid(row = 0, column = 1, sticky="WENS")
+canvas = Canvas(results_frame, width = int((config["reference_width"]-100)/4)*3, height =  int((config["reference_width"]-100)/5)*4-15, bg = config["color_bg_canvas"], scrollregion=(0,0,10000,10000))
 
-#width = int(config["window_width"]/4)*3, height =  int(config["window_width"]/7)*5 ,
-canvas = Canvas(results_frame, width = int(config["window_width"]/4)*3, height =  int(config["window_width"]/5)*4-15, bg = config["color_bg_canvas"], scrollregion=(0,0,10000,10000))
-#canvas.create_oval(0,0,105,105, fill = "black")
-canvas.grid(column=0,row=0, sticky="EW")
+canvas.grid(column=0, row=0, sticky="EW")
 
 scrollbar_sentences_y = Scrollbar(tk, width=15)
-scrollbar_sentences_y.grid(column=1,row=1, sticky="ENS")
+scrollbar_sentences_y.grid(column=1, row=1, sticky="ENS")
 
-#width = 100, height = 100,
 list_box_results = Listbox(second_row_frame, width=40, font = config["fuente_fields"], bg = config["color_bg_botones"] , fg = config["color_letra_botones"], yscrollcommand=scrollbar_sentences_y.set)
 list_box_results.grid(column=1, row=0, sticky="WENS")
 
