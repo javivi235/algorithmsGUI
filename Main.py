@@ -58,11 +58,12 @@ def insertar_elemento():
             print("Insertar Árbol Rojo y Negro " + input_valor.get())
             if arbolRN is None:
                 arbolRN = ArbolRN()
+                arbolRN.insertar(int(input_valor.get()))
+                arbolRN.print_tree()
                 list_box_results.insert(list_box_results.index("end") + 1, f'Agregamos la raiz {input_valor.get()} ')
             else:
-                print("raiz")
-                print(arbolRN.root.item)
                 arbolRN.insertar(int(input_valor.get()))
+                arbolRN.print_tree()
                 for paso in arbolRN.pasos:
                     list_box_results.insert(list_box_results.index("end") + 1, f'{paso}')
     else:
@@ -84,7 +85,7 @@ def borrar_elemento():
                 tablaHash.borrar(canvas,entrada)
                 for paso in tablaHash.pasos:
                     list_box_results.insert(list_box_results.index("end") + 1, f'{paso}')
-                    
+
         elif algoritmos_box.get() == "Árbol AVL":
             global arbolAVL
             canvas.delete("all")
@@ -108,15 +109,14 @@ def borrar_elemento():
         messagebox.showerror("Error", "Por favor ingrese un valor numérico")
     return
 
-def limpiar_canvas():
-    canvas.delete("all")
-    list_box_results.delete(0,END)
-    if validarInput(input_valor.get()):
-        if algoritmos_box.get() == "Árbol AVL":
-            global arbolAVL
-            arbolAVL = None
-
-    return
+# def limpiar_canvas():
+#     canvas.delete("all")
+#     list_box_results.delete(0,END)
+#     if algoritmos_box.get() == "Árbol AVL":
+#         global arbolAVL
+#         arbolAVL = None
+    # return
+    
 def guardar_m():
     global tablaHash
     if validarInput(input_m.get()): 
@@ -180,7 +180,7 @@ def validarInput(valor):
     return True        
 
 def modified (event) :
-    list_box_results.delete(0,END)
+    limpiar()
     if(algoritmos_box.get() == "Tabla Hash"):
         label_m.grid(row = 0,column = 7,padx = 5, pady = 5, sticky = W)
         input_m.grid(row = 0,column = 8, padx = 5, pady = 5, sticky = W)
