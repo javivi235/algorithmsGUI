@@ -17,7 +17,7 @@ from utils.canvasUtils import *
 config = default
 tk = Tk()
 tk.title('Proyecto Final')
-tk.geometry("1200x1005")
+tk.geometry("1300x1005")
 tk.config(bg = 'white')
 
 arbolAVL = None
@@ -134,7 +134,8 @@ def limpiar():
     arbolRN  = None
     tablaHash = None
     #TODO resetar algoritmos ordenamiento
-    #TODO resetear canvas y sentencias
+    canvas.delete("all")
+    list_box_results.delete(0, END)
 
 
 
@@ -220,7 +221,7 @@ scrollbar_sentences_y = Scrollbar(tk, width=15)
 scrollbar_sentences_y.grid(column=1,row=1, sticky="ENS")
 
 #width = 100, height = 100,
-list_box_results = Listbox(second_row_frame, width=30, font = config["fuente_fields"], bg = config["color_bg_botones"] , fg = config["color_letra_botones"], yscrollcommand=scrollbar_sentences_y.set)
+list_box_results = Listbox(second_row_frame, width=40, font = config["fuente_fields"], bg = config["color_bg_botones"] , fg = config["color_letra_botones"], yscrollcommand=scrollbar_sentences_y.set)
 list_box_results.grid(column=1, row=0, sticky="WENS")
 
 canvas_x_scroll.config(command=canvas.xview)
