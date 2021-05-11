@@ -167,7 +167,7 @@ def borrar_elemento():
 def guardar_m():
     global tablaHash
     if validarInput(input_m.get()): 
-        entrada = int(input_m.get())
+        entrada = abs(int(input_m.get()))
         if tablaHash is None:
             tablaHash = TablaHash(entrada)
             tablaHash.crear_tabla(canvas)
